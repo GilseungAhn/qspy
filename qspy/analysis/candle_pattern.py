@@ -1,7 +1,6 @@
 import numpy as np
 from .strategy import _ror_using_buy_and_hold
 
-
 def bullish_engulfing(
     data,
     period,

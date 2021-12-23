@@ -28,8 +28,8 @@ def load_stock_list(
 
     return_name_only: bool, default = True
         출력 타입 결정
-        - True: 종목 이름만 반환함 (자료형: ndarray)
-        - False: 종목 정보도 같이 포함 (자료형: 데이터프레임)
+        - True: 종목 이름과 코드만 반환함
+        - False: 종목 정보도 같이 포함
 
     :return: stock_list
         조건에 맞는 종목 정보 (자료형: 데이터프레임)
@@ -58,7 +58,7 @@ def load_stock_list(
 def load_stock_data(stock_code, start_date=None, end_date=None, download=True):
 
     """
-    하나의 종목 코드를 입력받아, 해당 데이터를 반환함
+    하나의 종목 코드를 입력받아, 해당 데이터를 반환
 
     Parameters:
     ==========================
@@ -140,9 +140,9 @@ def load_stock_data_list(
         수집 종료 날짜: YYYY-MM-DD (None으로 입력시 최근 개장일로 설정)
     download: bool, default: True
         수집한 데이터를 다운로드받을지 여부로, 기존 데이터가 있으면 병합됨
-    sleep_time_between_load, default: 1
+    sleep_time_between_load: int, default: 1
         한 데이터를 수집하고 나서 기다리는 시간(초)
-    sleep_time_connection_out, default: 15
+    sleep_time_connection_out: int, default: 15
         연결이 끊겼을 때 기다리는 시간(분)
 
     :return : data_list, type: list
@@ -214,7 +214,7 @@ def load_fs_data(
     quarter,
     consolidated=True,
     period="1Y",
-    add_date=True,
+    add_date=False,
 ):
     """
     재무 제표 데이터를 반환
@@ -222,14 +222,14 @@ def load_fs_data(
     Parameters:
     ==========================
     stock_code_list: array-like,
-        수집할 종목 코드로 구성된 목록
+        수집할 종목 코드로 구성된 배열
     account_list: array-like,
-        수집할 계정명 목록: ["유동자산", "비유동자산", "자산총계", "유동부채", "비유동부채", "부채총계",
+        수집할 계정명으로 구성된 배열: ["유동자산", "비유동자산", "자산총계", "유동부채", "비유동부채", "부채총계",
                          "자본금", "이익잉여금", "자본총계", "매출액", "영업이익", "법인세차감전 순이익", "당기순이익"]
     year: int
-        수집 연도
+        사업 연도
     quarter: int
-        수집 분기
+        사업 분기
     consolidate: bool, default: True
         연결 재무 제표를 사용할 것인지 여부 (단, True여도 연결 재무 제표를 발표하지 않는 기업은 개별 재무 제표를 사용)
     period: str,
