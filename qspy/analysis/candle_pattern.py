@@ -1,13 +1,7 @@
 import numpy as np
-from .strategy import _ror_using_buy_and_hold
 
 def bullish_engulfing(
     data,
-    period,
-    buy_col="Close",
-    sell_col="Close",
-    fee_rate=0.015,
-    tax_rate=0.3,
     open_col="Open",
     close_col="Close",
     high_col="High",
@@ -21,18 +15,6 @@ def bullish_engulfing(
     ==========================
     data: DataFrame
         주가 데이터 (FinanceDataReader나 이 패키지를 통해 수집한 데이터 구조와 일치해야 함)
-    period: int
-        보유 기간 (영업일)
-    buy_arr: array-like
-        매수 시점을 나타내는 부울 배열 (True: 매수, False: 매도)
-    buy_col: str, default: "Close"
-        패턴 발생 다음 날 매수 기준이 되는 컬럼 ("Close": 종가, "Open": 시가)
-    sell_col: str, default: "Close"
-        보유 기간 이후 매도 기준이 되는 컬럼 ("Close": 종가, "Open": 시가)
-    fee_rate: float, default: 0.15
-        매매 수수료 (%)
-    tax_rate: float, default: 0.3
-        세금 (%)
     open_col: str, default: "Open"
         시가를 나타내는 컬럼명
     close_col: str, default: "Close"
@@ -50,20 +32,11 @@ def bullish_engulfing(
 
     cond = cond_1 & cond_2 & cond_3 & cond_4
     cond = np.insert(cond, 0, False)
-
-    ror_list = _ror_using_buy_and_hold(
-        data, period, cond, buy_col, sell_col, fee_rate, tax_rate
-    )
-    return ror_list
+    return cond
 
 
 def bearish_engulfing(
     data,
-    period,
-    buy_col="Close",
-    sell_col="Close",
-    fee_rate=0.015,
-    tax_rate=0.3,
     open_col="Open",
     close_col="Close",
     high_col="High",
@@ -77,18 +50,6 @@ def bearish_engulfing(
     ==========================
     data: DataFrame
         주가 데이터 (FinanceDataReader나 이 패키지를 통해 수집한 데이터 구조와 일치해야 함)
-    period: int
-        보유 기간 (영업일)
-    buy_arr: array-like
-        매수 시점을 나타내는 부울 배열 (True: 매수, False: 매도)
-    buy_col: str, default: "Close"
-        패턴 발생 다음 날 매수 기준이 되는 컬럼 ("Close": 종가, "Open": 시가)
-    sell_col: str, default: "Close"
-        보유 기간 이후 매도 기준이 되는 컬럼 ("Close": 종가, "Open": 시가)
-    fee_rate: float, default: 0.15
-        매매 수수료 (%)
-    tax_rate: float, default: 0.3
-        세금 (%)
     open_col: str, default: "Open"
         시가를 나타내는 컬럼명
     close_col: str, default: "Close"
@@ -106,20 +67,12 @@ def bearish_engulfing(
 
     cond = cond_1 & cond_2 & cond_3 & cond_4
     cond = np.insert(cond, 0, False)
-
-    ror_list = _ror_using_buy_and_hold(
-        data, period, cond, buy_col, sell_col, fee_rate, tax_rate
-    )
-    return ror_list
+    return cond
 
 
 def three_black_crows(
     data,
     period,
-    buy_col="Close",
-    sell_col="Close",
-    fee_rate=0.015,
-    tax_rate=0.3,
     open_col="Open",
     close_col="Close",
 ):
@@ -130,18 +83,6 @@ def three_black_crows(
     ==========================
     data: DataFrame
         주가 데이터 (FinanceDataReader나 이 패키지를 통해 수집한 데이터 구조와 일치해야 함)
-    period: int
-        보유 기간 (영업일)
-    buy_arr: array-like
-        매수 시점을 나타내는 부울 배열 (True: 매수, False: 매도)
-    buy_col: str, default: "Close"
-        패턴 발생 다음 날 매수 기준이 되는 컬럼 ("Close": 종가, "Open": 시가)
-    sell_col: str, default: "Close"
-        보유 기간 이후 매도 기준이 되는 컬럼 ("Close": 종가, "Open": 시가)
-    fee_rate: float, default: 0.15
-        매매 수수료 (%)
-    tax_rate: float, default: 0.3
-        세금 (%)
     open_col: str, default: "Open"
         시가를 나타내는 컬럼명
     close_col: str, default: "Close"
@@ -162,20 +103,11 @@ def three_black_crows(
 
     cond = cond_1 & cond_2 & cond_3 & cond_4
     cond = np.insert(cond, [0, 0], False)
-
-    ror_list = _ror_using_buy_and_hold(
-        data, period, cond, buy_col, sell_col, fee_rate, tax_rate
-    )
-    return ror_list
+    return cond
 
 
 def three_white_soldiers(
     data,
-    period,
-    buy_col="Close",
-    sell_col="Close",
-    fee_rate=0.015,
-    tax_rate=0.3,
     open_col="Open",
     close_col="Close",
 ):
@@ -186,18 +118,6 @@ def three_white_soldiers(
     ==========================
     data: DataFrame
         주가 데이터 (FinanceDataReader나 이 패키지를 통해 수집한 데이터 구조와 일치해야 함)
-    period: int
-        보유 기간 (영업일)
-    buy_arr: array-like
-        매수 시점을 나타내는 부울 배열 (True: 매수, False: 매도)
-    buy_col: str, default: "Close"
-        패턴 발생 다음 날 매수 기준이 되는 컬럼 ("Close": 종가, "Open": 시가)
-    sell_col: str, default: "Close"
-        보유 기간 이후 매도 기준이 되는 컬럼 ("Close": 종가, "Open": 시가)
-    fee_rate: float, default: 0.15
-        매매 수수료 (%)
-    tax_rate: float, default: 0.3
-        세금 (%)
     open_col: str, default: "Open"
         시가를 나타내는 컬럼명
     close_col: str, default: "Close"
@@ -219,7 +139,4 @@ def three_white_soldiers(
     cond = cond_1 & cond_2 & cond_3 & cond_4
     cond = np.insert(cond, [0, 0], False)
 
-    ror_list = _ror_using_buy_and_hold(
-        data, period, cond, buy_col, sell_col, fee_rate, tax_rate
-    )
-    return ror_list
+    return cond

@@ -1,6 +1,6 @@
 import numpy as np
 
-def _ror_using_buy_and_hold(data,
+def ror_using_buy_and_hold(data,
                             period,
                             buy_arr,
                             buy_col = "Close",
@@ -18,7 +18,7 @@ def _ror_using_buy_and_hold(data,
     period: int
         보유 기간 (영업일)
     buy_arr: array-like
-        매수 시점을 나타내는 부울 배열 (True: 매수, False: 매도)
+        매수 시점을 나타내는 부울 배열 (True: 매수, False: 매수 X)
     buy_col: str, default: "Close"
         패턴 발생 다음 날 매수 기준이 되는 컬럼 ("Close": 종가, "Open": 시가)
     sell_col: str, default: "Close"
