@@ -9,7 +9,7 @@ def bullish_engulfing(
 ):
 
     """
-    상승 장악형이 발생한 시점을 반환하는 함수
+    상승 장악형이 발생한 시점을 반환
 
     Parameters:
     ==========================
@@ -23,6 +23,11 @@ def bullish_engulfing(
         고가를 나타내는 컬럼명
     low_col: str, default: "Low"
         저가 나타내는 컬럼명
+
+    returns:
+    ==========================
+    cond: ndarray
+        상승 장악형이 발생한 시점이 True인 부울 배열
     """
 
     cond_1 = (data[open_col] > data[close_col]).values[:-1]
@@ -44,7 +49,7 @@ def bearish_engulfing(
 ):
 
     """
-    하락 장악형이 발생한 시점을 반환하는 함수
+    하락 장악형이 발생한 시점을 반환
 
     Parameters:
     ==========================
@@ -58,6 +63,11 @@ def bearish_engulfing(
         고가를 나타내는 컬럼명
     low_col: str, default: "Low"
         저가 나타내는 컬럼명
+
+    returns:
+    ==========================
+    cond: ndarray
+        하락장악형이 발생한 시점이 True인 부울 배열
     """
 
     cond_1 = (data[open_col] < data[close_col]).values[:-1]
@@ -72,12 +82,11 @@ def bearish_engulfing(
 
 def three_black_crows(
     data,
-    period,
     open_col="Open",
     close_col="Close",
 ):
     """
-    흑삼병이 발생한 시점을 반환하는 함수
+    흑삼병이 발생한 시점을 반환
 
     Parameters:
     ==========================
@@ -87,10 +96,11 @@ def three_black_crows(
         시가를 나타내는 컬럼명
     close_col: str, default: "Close"
         종가를 나타내는 컬럼명
-    high_col: str, default: "High"
-        고가를 나타내는 컬럼명
-    low_col: str, default: "Low"
-        저가 나타내는 컬럼명
+
+    returns:
+    ==========================
+    cond: ndarray
+        흑삼병이 발생한 시점이 True인 부울 배열
     """
     cur_price = data[close_col].values[2:]
     pre_price = data[close_col].values[1:-1]
@@ -112,7 +122,7 @@ def three_white_soldiers(
     close_col="Close",
 ):
     """
-    적삼병이 발생한 시점을 반환하는 함수
+    적삼병이 발생한 시점을 반환
 
     Parameters:
     ==========================
@@ -122,10 +132,11 @@ def three_white_soldiers(
         시가를 나타내는 컬럼명
     close_col: str, default: "Close"
         종가를 나타내는 컬럼명
-    high_col: str, default: "High"
-        고가를 나타내는 컬럼명
-    low_col: str, default: "Low"
-        저가 나타내는 컬럼명
+
+    returns:
+    ==========================
+    cond: ndarray
+        적삼병이 발생한 시점이 True인 부울 배열
     """
     cur_price = data[close_col].values[2:]
     pre_price = data[close_col].values[1:-1]

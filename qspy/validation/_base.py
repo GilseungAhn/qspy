@@ -52,4 +52,5 @@ def ror_using_buy_and_hold(data,
     sell_tax = patt_sp_list * tax_rate / 100
 
     patt_ror_list = (patt_sp_list - patt_bp_list - buy_fee - sell_fee - sell_tax) / patt_bp_list
-    return patt_ror_list.tolist()
+    patt_ror_list = patt_ror_list.tolist()
+    return patt_ror_list
