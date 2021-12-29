@@ -151,3 +151,160 @@ def three_white_soldiers(
     cond = np.insert(cond, [0, 0], False)
 
     return cond
+
+
+def hammer(
+    data,
+    open_col="Open",
+    close_col="Close",
+    high_col="High",
+    low_col="low",
+    min_len_tail=0,
+    min_len_body=0,
+    max_len_tail=30,
+    max_len_body=30):
+
+    """
+    망치형이 발생한 시점을 반환
+
+    Parameters:
+    ==========================
+    data: DataFrame
+        주가 데이터 (FinanceDataReader나 이 패키지를 통해 수집한 데이터 구조와 일치해야 함)
+    open_col: str, default: "Open"
+        시가를 나타내는 컬럼명
+    close_col: str, default: "Close"
+        종가를 나타내는 컬럼명
+    high_col: str, default: "High"
+        고가를 나타내는 컬럼명
+    low_col: str, default: "Low"
+        저가를 나타내는 컬럼명
+    min_len_tail: float, default: 0
+        최소 꼬리 길이
+    min_len_body: float, default: 0
+        최소 몸통 길이
+    max_len_tail: float, default: 30
+        최대 꼬리 길이
+    max_len_body: float, default: 30
+        최대 몸통 길이
+
+    returns:
+    ==========================
+    cond: ndarray
+        망치형이 발생한 시점이 True인 부울 배열
+    """
+    open_price = data[open_col].values
+    close_price = data[close_col].values
+    high_price = data[high_col].values
+    low_price = data[low_col].values
+
+    tail_len = (open_price - low_price) / low_price * 100
+    body_len = (close_price - open_price) / open_price * 100
+
+    cond = (high_price == close_price) & (close_price > open_price)
+    cond = cond & (tail_len >= min_len_tail) & (tail_len <= max_len_tail) & (body_len >= min_len_body) & (body_len <= max_len_body)
+
+    return cond
+
+
+def inverted_hammer(
+    data,
+    open_col="Open",
+    close_col="Close",
+    high_col="High",
+    low_col="low",
+    min_len_tail=0,
+    min_len_body=0,
+    max_len_tail=30,
+    max_len_body=30):
+
+    """
+    역망치형이 발생한 시점을 반환
+
+    Parameters:
+    ==========================
+    data: DataFrame
+        주가 데이터 (FinanceDataReader나 이 패키지를 통해 수집한 데이터 구조와 일치해야 함)
+    open_col: str, default: "Open"
+        시가를 나타내는 컬럼명
+    close_col: str, default: "Close"
+        종가를 나타내는 컬럼명
+    high_col: str, default: "High"
+        고가를 나타내는 컬럼명
+    low_col: str, default: "Low"
+        저가를 나타내는 컬럼명
+    min_len_tail: float, default: 0
+        최소 꼬리 길이
+    min_len_body: float, default: 0
+        최소 몸통 길이
+    max_len_tail: float, default: 30
+        최대 꼬리 길이
+    max_len_body: float, default: 30
+        최대 몸통 길이
+
+    returns:
+    ==========================
+    cond: ndarray
+        망치형이 발생한 시점이 True인 부울 배열
+    """
+
+    open_price = data[open_col].values
+    close_price = data[close_col].values
+    high_price = data[high_col].values
+    low_price = data[low_col].values
+
+    tail_len = (high_price - close_price) / close_price * 100
+    body_len = (close_price - open_price) / open_price * 100
+
+    cond = (low_price == open_price) & (close_price > open_price)
+    cond = cond & (tail_len >= min_len_tail) & (tail_len <= max_len_tail) & (body_len >= min_len_body) & (body_len <= max_len_body)
+
+    return cond
+
+
+
+def dragon_fly_doji(
+    data,
+    open_col="Open",
+    close_col="Close",
+    high_col="High",
+    low_col="low",
+    min_len_tail=0,
+    max_len_tail=30):
+
+    """
+    잠자리형이 발생한 시점을 반환
+
+    Parameters:
+    ==========================
+    data: DataFrame
+        주가 데이터 (FinanceDataReader나 이 패키지를 통해 수집한 데이터 구조와 일치해야 함)
+    open_col: str, default: "Open"
+        시가를 나타내는 컬럼명
+    close_col: str, default: "Close"
+        종가를 나타내는 컬럼명
+    high_col: str, default: "High"
+        고가를 나타내는 컬럼명
+    low_col: str, default: "Low"
+        저가를 나타내는 컬럼명
+    min_len_tail: float, default: 0
+        최소 꼬리 길이
+    max_len_tail: float, default: 30
+        최대 꼬리 길이
+
+    returns:
+    ==========================
+    cond: ndarray
+        잠자리형이 발생한 시점이 True인 부울 배열
+    """
+    open_price = data[open_col].values
+    close_price = data[close_col].values
+    high_price = data[high_col].values
+    low_price = data[low_col].values
+
+    tail_len = (open_price - low_price) / low_price * 100
+
+    cond = (high_price == close_price) & (high_price == open_price)
+    cond = cond & (tail_len >= min_len_tail) & (tail_len <= max_len_tail)
+
+    return cond

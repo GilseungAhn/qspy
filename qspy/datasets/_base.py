@@ -3,6 +3,8 @@ import pandas as pd
 import time
 import os
 from pkg_resources import resource_filename
+from ..utils import name_to_code
+from ..utils import name_list
 import numpy as np
 
 
@@ -55,15 +57,15 @@ def load_stock_list(
         return stock_list
 
 
-def load_stock_data(stock_code, start_date=None, end_date=None, download=True):
+def load_stock_data(stock_code_or_name, start_date=None, end_date=None, download=True):
 
     """
     하나의 종목 코드를 입력받아, 해당 데이터를 반환
 
     Parameters:
     ==========================
-    stock_code: str,
-        수집할 종목 코드
+    stock_code_or_name: str,
+        수집할 종목 코드 혹은 이름
     start_date: str, default: None
         수집 시작 날짜: YYYY-MM-DD (None으로 입력시 상장일로 설정)
     end_date: str, default: None
@@ -75,8 +77,14 @@ def load_stock_data(stock_code, start_date=None, end_date=None, download=True):
         수집한 데이터
     """
 
-    if not ((len(stock_code) == 6) and (stock_code.isdigit())):
-        raise ValueError("적절한 종목 코드가 아닙니다. 종목 코드는 6자리 숫자입니다.")
+    # stock_code_or_name을 stock_code로 변환
+    if stock_code_or_name in name_list():
+        stock_code = name_to_code(stock_code_or_name)
+    else:
+        stock_code = stock_code_or_name
+        if not ((len(stock_code) == 6) and (stock_code.isdigit())):
+            raise ValueError("적절한 종목 코드가 아닙니다. 종목 코드는 6자리 숫자입니다.")
+
     file_path = resource_filename(
         __name__, "pickle_data/stock_price/{}.pkl".format(stock_code)
     )
@@ -86,7 +94,7 @@ def load_stock_data(stock_code, start_date=None, end_date=None, download=True):
         data = pd.read_pickle(file_path, compression = "xz")
         data["Date"] = pd.to_datetime(data["Date"])
         if (data["Date"].min() <= pd.to_datetime(start_date)) and (
-            data["Date"].max() >= pd.to_datetime(start_date)
+            data["Date"].max() >= pd.to_datetime(end_date)
         ):
             data = data.loc[
                 (data["Date"] <= pd.to_datetime(start_date))
@@ -120,7 +128,7 @@ def load_stock_data(stock_code, start_date=None, end_date=None, download=True):
 
 
 def load_stock_data_list(
-    stock_code_list,
+    stock_code_or_name_list,
     start_date=None,
     end_date=None,
     download=True,
@@ -132,8 +140,8 @@ def load_stock_data_list(
 
     Parameters:
     ==========================
-    stock_code_list: array-like,
-        수집할 종목 코드로 구성된 배열
+    stock_code_or_name_list: array-like,
+        수집할 종목 코드 및 이름으로 구성된 배열
     start_date: str, default: None
         수집 시작 날짜: YYYY-MM-DD (None으로 입력시 상장일로 설정)
     end_date: str, default: None
@@ -150,6 +158,18 @@ def load_stock_data_list(
     """
 
     data_list = []
+
+    # stock_code_or_name_list를 stock_code_list로 변환
+    stock_code_list = []
+    for stock_code_or_name in stock_code_or_name_list:
+        if stock_code_or_name in name_list():
+            stock_code = name_to_code(stock_code_or_name)
+        else:
+            stock_code = stock_code_or_name
+            if not ((len(stock_code) == 6) and (stock_code.isdigit())):
+                raise ValueError("적절한 종목 코드가 아닙니다. 종목 코드는 6자리 숫자입니다: {}".format(stock_code))
+        stock_code_list.append(stock_code)
+
     for code in stock_code_list:
         try:
             data = load_stock_data(code, start_date, end_date, download)
@@ -208,7 +228,7 @@ def _read_fs_record(file_path, account_list, consolidated, _year, _quarter, add_
 
 
 def load_fs_data(
-    stock_code_list,
+    stock_code_or_name_list,
     account_list,
     year,
     quarter,
@@ -221,8 +241,8 @@ def load_fs_data(
 
     Parameters:
     ==========================
-    stock_code_list: array-like,
-        수집할 종목 코드로 구성된 배열
+    stock_code_or_name_list: array-like,
+        수집할 종목 코드 혹은 이름으로 구성된 배열
     account_list: array-like,
         수집할 계정명으로 구성된 배열: ["유동자산", "비유동자산", "자산총계", "유동부채", "비유동부채", "부채총계",
                          "자본금", "이익잉여금", "자본총계", "매출액", "영업이익", "법인세차감전 순이익", "당기순이익"]
@@ -248,6 +268,17 @@ def load_fs_data(
 
     folder_path = resource_filename(__name__, "pickle_data/finance_state").replace('\\', '/')
     data = []
+
+    # stock_code_or_name_list를 stock_code_list로 변환
+    stock_code_list = []
+    for stock_code_or_name in stock_code_or_name_list:
+        if stock_code_or_name in name_list():
+            stock_code = name_to_code(stock_code_or_name)
+        else:
+            stock_code = stock_code_or_name
+            if not ((len(stock_code) == 6) and (stock_code.isdigit())):
+                raise ValueError("적절한 종목 코드가 아닙니다. 종목 코드는 6자리 숫자입니다: {}".format(stock_code))
+        stock_code_list.append(stock_code)
 
     for stock_code in stock_code_list:
         file_path = folder_path + "/{}".format(stock_code)
