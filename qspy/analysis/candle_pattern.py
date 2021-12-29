@@ -158,7 +158,7 @@ def hammer(
     open_col="Open",
     close_col="Close",
     high_col="High",
-    low_col="low",
+    low_col="Low",
     min_len_tail=0,
     min_len_body=0,
     max_len_tail=30,
@@ -212,7 +212,7 @@ def inverted_hammer(
     open_col="Open",
     close_col="Close",
     high_col="High",
-    low_col="low",
+    low_col="Low",
     min_len_tail=0,
     min_len_body=0,
     max_len_tail=30,
@@ -268,7 +268,7 @@ def dragon_fly_doji(
     open_col="Open",
     close_col="Close",
     high_col="High",
-    low_col="low",
+    low_col="Low",
     min_len_tail=0,
     max_len_tail=30):
 
