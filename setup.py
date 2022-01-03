@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="qspy",
-    version="0.1.6",
+    version="0.1.7",
     license='MIT',
     author="Gil's LAB",
     author_email="gils_lab@naver.com",
