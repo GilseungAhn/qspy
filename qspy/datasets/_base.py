@@ -115,7 +115,11 @@ def load_stock_data(stock_code_or_name, start_date=None, end_date=None, download
             old_data = pd.read_pickle(file_path, compression="xz")
             old_data["Date"] = pd.to_datetime(old_data["Date"])
             data = pd.concat([data, old_data], axis=0, ignore_index=True)
-            data = data.drop_duplicates().sort_values(by="Date").reset_index(drop=True)
+            data = data.drop_duplicates(subset = ["Date"]).sort_values(by="Date").reset_index(drop=True)
+            change = (data["Close"].values[1:] - data["Close"].values[:-1]) / data["Close"].values[:-1]
+            change = np.insert(change, 0, np.nan)
+            data["Change"] = change
+
             change_null_idx = data.loc[data["Change"].isnull()].index
             for idx in change_null_idx:
                 if idx - 1 in data.index:
