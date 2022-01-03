@@ -109,7 +109,10 @@ def ror_buy_and_sell(data,
         if sum(sell_idx_list > buy_idx) == 0:
             break
         else:
-            sell_idx = sell_idx_list[sell_idx_list > buy_idx][0]
+            if buy_col == "Open" and sell_col == "Close":
+                sell_idx = sell_idx_list[sell_idx_list >= buy_idx][0]
+            else:
+                sell_idx = sell_idx_list[sell_idx_list > buy_idx][0]
             buy_price = data.loc[buy_idx, buy_col]
             sell_price = data.loc[sell_idx, sell_col]
             buy_fee = buy_price * fee_rate / 100
