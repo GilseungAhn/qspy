@@ -36,6 +36,7 @@ def ror_buy_and_hold(data,
     if fee_rate > 100 or fee_rate < 0:
         raise ValueError("fee_rate는 0과 100사이어야 합니다.")
 
+    data = data.reset_index(drop = True)
     buy_arr = np.array(buy_arr)
     buy_idx_list = data.loc[buy_arr].index
     max_idx = max(data.index)

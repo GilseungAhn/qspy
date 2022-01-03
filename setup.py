@@ -9,7 +9,7 @@ setuptools.setup(
     description="python package for verifying quantative strategies",
     url="https://github.com/GilseungAhn/qspy.git",
     python_requires='>=3',
-    packages=['qspy', 'qspy/analysis', 'qspy/datasets', 'qspy/utils'],
+    packages=['qspy', 'qspy/analysis', 'qspy/datasets', 'qspy/utils', 'qspy/validation'],
     install_requires=["numpy", "finance-datareader", "pandas"],
     package_data={
         'qspy': ['datasets/pickle_data/stock_price/*.pkl',
